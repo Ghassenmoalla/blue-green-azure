@@ -60,6 +60,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'webapp-blue-ghassen'
-          slot-name: 'Production'
-          package: .
+          slot-name: 'green'
+          package: 'app'
           

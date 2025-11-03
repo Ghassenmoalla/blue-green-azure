@@ -26,6 +26,8 @@ jobs:
           cache-dependency-path: app/package-lock.json
 
       - name: npm install, build, and test
+        # This step now runs inside the 'app' folder
+        working-directory: ./app
         run: |
           npm install
           npm run build --if-present
@@ -35,7 +37,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          # This step now uploads only the 'app' folder
+          path: ./app
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,7 +65,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'webapp-blue-ghassen'
-          slot-name: 'Production'
+          # Deploys to the 'green' slot per your guide
+          slot-name: 'green'
+          # 'package: .' is now correct because the artifact root IS the app
           package: .
-
-          

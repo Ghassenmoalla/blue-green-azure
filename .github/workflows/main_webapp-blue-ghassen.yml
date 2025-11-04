@@ -65,7 +65,8 @@ jobs:
         with:
           app-name: 'webapp-blue-ghassen'
           # Deploys to the 'green' slot per your guide
-          slot-name: 'green'
+          slot-name: 'Production'
           # 'package: .' is now correct because the artifact root IS the app
           package: .
+
 

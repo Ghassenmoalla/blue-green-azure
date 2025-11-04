@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'npm'
-          # point cache to package.json so caching isn't skipped if lockfile missing
+          # This is correct based on your comment that package-lock is missing
           cache-dependency-path: app-green/package.json
 
-      - name: npm install, build, and test
-        # This step now runs inside the 'app' folder
+      - name: npm install, build
+        # This is correct
         working-directory: ./app-green
         run: |
           npm install
@@ -37,8 +37,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          # Upload the contents of app-green so the artifact root contains the app files
-          path: ./app-green/*
+          # This uploads the contents of the app-green folder
+          path: ./app-green
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,6 +51,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
+          # This downloads the contents of the artifact to the root
           name: node-app
       
       - name: Login to Azure
@@ -65,9 +66,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'webapp-blue-ghassen'
-          # Deploys to the 'green' slot per your guide
           slot-name: 'green'
-          # The artifact is downloaded into ./node-app; deploy that folder
-          package: ./node-app
-
-
+          # THE FIX: Deploy the root folder ('.') which now contains your app files
+          package: .
